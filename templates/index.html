@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Agriculture Advisory</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background: #f3f7f2;
+        color: #1d2b1f;
+      }
+      .container {
+        max-width: 900px;
+        margin: 24px auto;
+        background: #fff;
+        padding: 24px;
+        border-radius: 10px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      }
+      h1 {
+        margin-top: 0;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      label {
+        font-weight: bold;
+      }
+      input,
+      select,
+      button {
+        width: 100%;
+        margin-top: 4px;
+        margin-bottom: 8px;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccd8cb;
+      }
+      button {
+        background: #2f7d32;
+        color: #fff;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      .result {
+        margin-top: 20px;
+        background: #eef7ea;
+        border: 1px solid #d7e8d0;
+        border-radius: 8px;
+        padding: 16px;
+      }
+      .risk {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+      .risk.low { background: #cfeccf; }
+      .risk.medium { background: #ffe9a8; }
+      .risk.high { background: #ffc4c4; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🌾 Smart Agriculture Advisory System</h1>
+      <p>Enter current field conditions to receive irrigation, fertilization, and pest-control guidance.</p>
+
+      <form action="/advice" method="post">
+        <div class="grid">
+          <div>
+            <label for="crop">Crop</label>
+            <input id="crop" name="crop" required value="{{ payload.crop if payload else '' }}" placeholder="e.g., maize" />
+          </div>
+          <div>
+            <label for="temperature_c">Temperature (°C)</label>
+            <input id="temperature_c" type="number" step="0.1" name="temperature_c" required value="{{ payload.temperature_c if payload else '' }}" />
+          </div>
+          <div>
+            <label for="humidity_pct">Humidity (%)</label>
+            <input id="humidity_pct" type="number" name="humidity_pct" min="0" max="100" required value="{{ payload.humidity_pct if payload else '' }}" />
+          </div>
+          <div>
+            <label for="soil_moisture_pct">Soil Moisture (%)</label>
+            <input id="soil_moisture_pct" type="number" name="soil_moisture_pct" min="0" max="100" required value="{{ payload.soil_moisture_pct if payload else '' }}" />
+          </div>
+          <div>
+            <label for="rainfall_mm">Rainfall (mm)</label>
+            <input id="rainfall_mm" type="number" step="0.1" name="rainfall_mm" min="0" required value="{{ payload.rainfall_mm if payload else '' }}" />
+          </div>
+          <div>
+            <label for="pest_alert">Pest Alert Level</label>
+            <select id="pest_alert" name="pest_alert">
+              {% for lvl in ['none', 'low', 'medium', 'high'] %}
+              <option value="{{ lvl }}" {% if payload and payload.pest_alert == lvl %}selected{% endif %}>{{ lvl }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <button type="submit">Generate Advice</button>
+      </form>
+
+      {% if result %}
+      <div class="result">
+        <h2>Advisory Result</h2>
+        <p><strong>Irrigation:</strong> {{ result.irrigation }}</p>
+        <p><strong>Fertilization:</strong> {{ result.fertilization }}</p>
+        <p><strong>Pest Control:</strong> {{ result.pest_control }}</p>
+        <p>
+          <strong>Risk Level:</strong>
+          <span class="risk {{ result.risk_level }}">{{ result.risk_level }}</span>
+        </p>
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>
