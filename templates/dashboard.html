@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="grid">
+  <div class="card">
+    <h3>Weather ({{ weather.source }})</h3>
+    <p>Temp: {{ weather.temperature }} °C</p>
+    <p>Humidity: {{ weather.humidity }}%</p>
+    <p>{{ weather.description }}</p>
+  </div>
+
+  <div class="card">
+    <h3>Crop Recommendation</h3>
+    <form id="crop-form">
+      <label>Soil <input name="soil" placeholder="loamy" required/></label>
+      <label>Season <input name="season" placeholder="rabi/kharif" required/></label>
+      <label>Weather <input name="weather" placeholder="hot, rainy" required/></label>
+      <button type="submit">Recommend</button>
+    </form>
+    <p id="crop-result"></p>
+  </div>
+
+  <div class="card">
+    <h3>Disease Detection</h3>
+    <form id="disease-form" enctype="multipart/form-data">
+      <label>Upload leaf image <input type="file" name="image"/></label>
+      <label>Or symptoms <input name="symptoms" placeholder="brown spots"/></label>
+      <button type="submit">Detect</button>
+    </form>
+    <p id="disease-result"></p>
+  </div>
+
+  <div class="card">
+    <h3>Irrigation Advisory</h3>
+    <form id="irrigation-form">
+      <label>Temperature <input type="number" name="temperature" value="32" step="0.1"/></label>
+      <label>Humidity <input type="number" name="humidity" value="45" step="0.1"/></label>
+      <label>Rainfall (mm) <input type="number" name="rainfall" value="2" step="0.1"/></label>
+      <button type="submit">Advise</button>
+    </form>
+    <p id="irrigation-result"></p>
+  </div>
+
+  <div class="card">
+    <h3>Market Price Prediction</h3>
+    <form id="market-form">
+      <label>Crop <input name="crop" value="wheat"/></label>
+      <label>Month <input type="number" name="month" value="4" min="1" max="12"/></label>
+      <label>Rainfall (mm) <input type="number" name="rainfall" value="20" step="0.1"/></label>
+      <label>Fuel Cost PKR/L <input type="number" name="fuel_cost" value="280" step="0.1"/></label>
+      <button type="submit">Predict</button>
+    </form>
+    <p id="market-result"></p>
+  </div>
+</section>
+{% endblock %}
