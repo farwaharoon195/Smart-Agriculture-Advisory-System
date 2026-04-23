@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+smart_agri.db
+app.log
+static/uploads/*
+models/*.pkl
